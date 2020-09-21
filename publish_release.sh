@@ -13,9 +13,11 @@ if ! which packr2 >/dev/null; then
   exit 1
 fi
 
-cd cmd/sensu-rri-write && packr2 && cd ../..
-CGO_ENABLED=0 go build -o bin/sensu-rri-write cmd/sensu-rri-write/main.go
-cd cmd/sensu-rri-write && packr2 clean && cd ../..
+cd cmd/sensu-rri-write
+packr2
+CGO_ENABLED=0 go build -o ../../bin/sensu-rri-write main.go
+packr2 clean
+cd ../..
 
 tar czf sensu-rri-write_${TAG}_linux_amd64.tar.gz bin/
 

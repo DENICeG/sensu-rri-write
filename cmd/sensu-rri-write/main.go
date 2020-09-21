@@ -15,7 +15,7 @@ import (
 var (
 	timeBegin = time.Now()
 	rriClient *rri.Client
-	packrbox  = packr.New("box", "./")
+	packrbox  = packr.New("box", "../../orderfile")
 )
 
 func main() {
