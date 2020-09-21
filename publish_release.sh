@@ -15,7 +15,7 @@ fi
 
 cd cmd/sensu-rri-write
 packr2
-CGO_ENABLED=0 go build -o ../../bin/sensu-rri-write main.go
+CGO_ENABLED=0 go build -o ../../bin/sensu-rri-write
 packr2 clean
 cd ../..
 
