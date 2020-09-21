@@ -7,7 +7,16 @@ else
   TAG=$1
 fi
 
+if ! which packr2 >/dev/null; then 
+  echo packr2 binary is not installed
+  echo "(go get github.com/gobuffalo/packr/v2/packr2)"
+  exit 1
+fi
+
+cd cmd/sensu-rri-write && packr2 && cd ../..
 CGO_ENABLED=0 go build -o bin/sensu-rri-write cmd/sensu-rri-write/main.go
+cd cmd/sensu-rri-write && packr2 clean && cd ../..
+
 tar czf sensu-rri-write_${TAG}_linux_amd64.tar.gz bin/
 
 sha512sum sensu-rri-write_${TAG}_linux_amd64.tar.gz > sensu-rri-write_${TAG}_sha512_checksums.txt
