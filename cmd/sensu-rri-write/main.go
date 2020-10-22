@@ -16,9 +16,14 @@ var (
 	timeBegin = time.Now()
 	rriClient *rri.Client
 	packrbox  = packr.New("box", "../../orderfile")
+	fails     int
 )
 
 func main() {
+	run()
+}
+
+func run() {
 
 	var err error
 	log.SetOutput(os.Stderr)
@@ -40,7 +45,6 @@ func main() {
 	if err != nil {
 		printFailMetricsAndExit("login failed:", err.Error())
 	}
-	defer rriClient.Logout() // nolint:errcheck
 
 	timeLoginDone := time.Now()
 
@@ -72,9 +76,16 @@ func main() {
 		"total", durationTotal,
 		timeBegin.Unix())
 
+	rriClient.Logout() // nolint:errcheck
+	os.Exit(0)
 }
 
 func printFailMetricsAndExit(errors ...string) {
+
+	if fails < 3 {
+		fails++
+		run()
+	}
 
 	errStr := "ERROR:"
 
