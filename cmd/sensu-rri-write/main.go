@@ -17,24 +17,30 @@ var (
 	rriClient *rri.Client
 	packrbox  = packr.New("box", "../../orderfile")
 	fails     int
+	regacc    string
+	password  string
+	rriServer string
 )
 
 func main() {
-	run()
-}
-
-func run() {
-
-	var err error
-	log.SetOutput(os.Stderr)
-
 	whiteflag.Alias("r", "regacc", "sets the regacc to use")
 	whiteflag.Alias("p", "password", "sets the password to use")
 	whiteflag.Alias("s", "server", "sets the RRI server to use")
 
-	regacc := whiteflag.GetString("regacc")
-	password := whiteflag.GetString("password")
-	rriServer := whiteflag.GetString("server") + ":51131"
+	regacc = whiteflag.GetString("regacc")
+	password = whiteflag.GetString("password")
+	rriServer = whiteflag.GetString("server") + ":51131"
+
+	run()
+}
+
+func run() {
+	var err error
+	log.SetOutput(os.Stderr)
+
+	if rriClient != nil {
+		rriClient.Logout() // nolint:errcheck
+	}
 
 	rriClient, err = rri.NewClient(rriServer, nil)
 	if err != nil {
