@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -13,7 +14,7 @@ import (
 )
 
 var (
-	timeBegin = time.Now()
+	timeBegin time.Time
 	rriClient *rri.Client
 	packrbox  = packr.New("box", "../../orderfile")
 	fails     int
@@ -30,6 +31,11 @@ func main() {
 	regacc = whiteflag.GetString("regacc")
 	password = whiteflag.GetString("password")
 	rriServer = whiteflag.GetString("server") + ":51131"
+
+	rand.Seed(time.Now().UnixNano())
+	time.Sleep(time.Duration(rand.Intn(15)) * time.Second)
+
+	timeBegin = time.Now()
 
 	run()
 }
