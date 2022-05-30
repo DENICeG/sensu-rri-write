@@ -3,5 +3,5 @@ api_version: core/v2
 metadata:
   name: sensu-rri-write
 spec:
-  sha512: 7ee677228879f0ef6fa9e2c62778b6064b06897032a6b690b506cafed84b07b5a0d8c1f97b48259dcc9b023ee412e46ef6e159fce7f0610c68d610236e1c70fb
-  url: https://github.com/DENICeG/sensu-rri-write/releases/download/v1.0.7/sensu-rri-write_v1.0.7_linux_amd64.tar.gz
+  sha512: c0d260e1fcb324c9896182a86bf5699d14f1604c0a45a8b52857e853e5cff908d3b0f2cc0e17182a2c2e4ba320605897155d7472a4cc4385da18f0331d421a4e
+  url: https://github.com/DENICeG/sensu-rri-write/releases/download/v1.0.8/sensu-rri-write_v1.0.8_linux_amd64.tar.gz
