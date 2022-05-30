@@ -3,7 +3,7 @@ module github.com/DENICeG/sensu-rri-write
 go 1.18
 
 require (
-	github.com/DENICeG/go-rriclient v1.13.0
+	github.com/DENICeG/go-rriclient v1.14.0
 	github.com/danielb42/whiteflag v1.2.7
 	github.com/gobuffalo/packr/v2 v2.8.3
 )
