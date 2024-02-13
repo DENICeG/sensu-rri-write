@@ -1,23 +1,18 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then 
+if [[ -z "$1" ]]; then
   echo "need tag/version in format v1.x.y"
   exit 1
 else
   TAG=$1
 fi
 
-if ! which packr2 >/dev/null; then 
-  echo packr2 binary is not installed
-  echo "(go get github.com/gobuffalo/packr/v2/packr2)"
+if [[ ! -f "./cmd/sensu-rri-write/orderfile" ]]; then
+  echo "./cmd/sensu-rri-write/orderfile is missing"
   exit 1
 fi
 
-cd cmd/sensu-rri-write
-packr2
-CGO_ENABLED=0 go build -o ../../bin/sensu-rri-write
-packr2 clean
-cd ../..
+CGO_ENABLED=0 go build -o ./bin/sensu-rri-write ./cmd/sensu-rri-write
 
 tar czf sensu-rri-write_${TAG}_linux_amd64.tar.gz bin/
 

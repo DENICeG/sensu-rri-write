@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"log"
 	"math/rand"
@@ -10,17 +11,20 @@ import (
 
 	"github.com/DENICeG/go-rriclient/pkg/rri"
 	"github.com/danielb42/whiteflag"
-	"github.com/gobuffalo/packr/v2"
 )
 
 var (
 	timeBegin time.Time
 	rriClient *rri.Client
-	packrbox  = packr.New("box", "../../orderfile")
 	fails     int
 	regacc    string
 	password  string
 	rriServer string
+)
+
+var (
+	//go:embed orderfile
+	orderStr string
 )
 
 func main() {
@@ -32,7 +36,6 @@ func main() {
 	password = whiteflag.GetString("password")
 	rriServer = whiteflag.GetString("server") + ":51131"
 
-	rand.Seed(time.Now().UnixNano())
 	time.Sleep(time.Duration(rand.Intn(15)) * time.Second)
 
 	timeBegin = time.Now()
@@ -62,12 +65,7 @@ func run() {
 
 	timeLoginDone := time.Now()
 
-	rriQuery, err := packrbox.FindString("order.rri")
-	if err != nil {
-		panic(err)
-	}
-
-	rriResponse, err := rriClient.SendRaw(rriQuery)
+	rriResponse, err := rriClient.SendRaw(orderStr)
 	if err != nil {
 		printFailMetricsAndExit("SendRaw() failed:", err.Error())
 	}
@@ -77,7 +75,7 @@ func run() {
 	}
 
 	durationLogin := timeLoginDone.Sub(timeBegin).Milliseconds()
-	durationOrder := time.Now().Sub(timeLoginDone).Milliseconds() // nolint:gosimple
+	durationOrder := time.Since(timeLoginDone).Milliseconds()
 	durationTotal := durationLogin + durationOrder
 
 	log.Printf("OK: RRI login + order: %dms + %dms = %dms\n\n", durationLogin, durationOrder, durationTotal)
